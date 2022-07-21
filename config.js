@@ -1,10 +1,12 @@
 import mysql from 'mysql';
 
 const con= mysql.createConnection({
-    host:'localhost',
+    host:'172.25.0.100',
     user:'root',
-    password:"password",
-    database:"sample_db"
+    password:"123",
+    database:"testDb",
+    // port: '/var/lib/mysql/mysqld.sock'
+    
 });
 
 con.connect((err)=>{
