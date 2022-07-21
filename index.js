@@ -1,6 +1,6 @@
-import express from 'express';
+import express, { response } from 'express';
 import bodyParser from 'body-parser';
-import loginRoutes from './routes/users.js';
+import router from './routes/users.js';
 
 const app = express();
 const port = "5000";
@@ -25,7 +25,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/login', loginRoutes);
+
+app.use('/login', router);
+
 
 
 app.listen(port, ()=> console.log(`http://localhost:${port} server is up`))

@@ -1,5 +1,5 @@
 import con from '../config.js';
-
+import jwt from 'jsonwebtoken';
 
 export const login = (req,response)=>{
     let username = req.body.username;
@@ -105,3 +105,40 @@ export const deleteUser = (req,response)=>{
         }
     })
 }
+
+export const hello = ((req, response)=>{
+    response.send("HELLO")
+  })
+  
+  const SERCRET_KEY = "667c3d9a2b2ca4332c0e21a3e66ffe7ef779907d0808fdbd4cafe6d13d7a84cc0d00ffb7d2509db0ab028834831888ea4334958e650afbaff430dc81d6cac8c8"
+  
+  
+  export function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    console.log(authHeader)
+  
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, SERCRET_KEY, (err, user) => {
+      console.log(err)
+  
+      if (err) return res.sendStatus(403)
+  
+      req.user = user
+  
+      next()
+    })
+  }
+  
+  
+  export function generateAccessToken(username) {
+    console.log(process.env.TOKEN_SECRET)
+      return jwt.sign(username, SERCRET_KEY, { expiresIn: '1800s' });
+    }
+  
+  export const token = ('/jwt', (req, response) => {
+    const token = generateAccessToken({username: req.body.username})
+    response.json(token)
+  })
+  
